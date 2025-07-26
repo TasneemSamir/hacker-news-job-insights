@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from collections import Counter
 import re
 import matplotlib.pyplot as plt
-
+import pandas as pd 
 url='https://news.ycombinator.com/item?id=43858554'
 response=requests.get(url)
 # print(response)
@@ -48,7 +48,7 @@ plt.ylabel("number of Mentions")
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
-plt.savefig("plots/bar_plot.png")
+
 
 
 category_counts={category:0 for category in keyword_map}
@@ -63,6 +63,10 @@ plt.figure(figsize=(10, 10))
 plt.pie(category_counts.values(),labels=category_counts.keys(),autopct='%1.1f%%',startangle=90)
 plt.title('Tech by Category')
 plt.show()
-plt.savefig("plots/pie_chart.png")
 
+df_keywords=pd.DataFrame(counter.items(),columns=[['technology','Count']])
+df_keywords.to_csv("tech_trends.csv",index=False)
+
+df_categories = pd.DataFrame(category_counts.items(), columns=['Category', 'Count'])
+df_categories.to_csv('category_counts.csv', index=False)
 
